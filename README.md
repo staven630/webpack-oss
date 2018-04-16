@@ -39,6 +39,6 @@ new AliossPlugin({
   - false: not delete
 * deleteAll: 
   - true: delete all old files
-    - false: not delete
+  - false: not delete
 > security
 
