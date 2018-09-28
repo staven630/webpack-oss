@@ -1,6 +1,5 @@
 # [webpack-oss]
 自动上传静态资源到阿里的oss
-本插件基于<a href="https://www.npmjs.com/package/webpack-oss-plugin">webpack-oss-plugin</a>, 添加了删除子目录文件的功能
 
 > Install
 
@@ -30,11 +29,9 @@ new AliossPlugin({
 
 * prefix: The directory name which will accept uploaded files.
 * exclude: Support RegExp syntax, matched files will not be upload to oss
-* enableLog: Whether or not show detail infos for you, just should be enable in development mode.
 * ignoreError:  Whether or not stop build if upload error.
   - true: will be stop
   - false: will be not stop
-* deleteMode: Whether or not delete file after the file uploaded succesfully.
   - true: delete
   - false: not delete
 * deleteAll: 

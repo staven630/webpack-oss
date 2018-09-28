@@ -25,10 +25,8 @@
     "_id": "webpack-oss@1.0.0",
     "_from": "webpack-oss@1.0.0",
     "dependencies": {
-        "address": "^1.0.1",
         "ali-oss": "^4.8.0",
         "chalk": "^1.1.3",
-        "co": "^4.6.0",
         "lodash": "^4.17.4"
     }
 }
