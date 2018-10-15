@@ -1,6 +1,10 @@
 {
     "name": "webpack-oss",
+<<<<<<< HEAD
     "version": "2.0.4",
+=======
+    "version": "2.0.1",
+>>>>>>> 1923525a51d38c97f7fe51a6bd71e996a8b64af7
     "description": "An automatic upload plug-in for AliOSS",
     "main": "index.js",
     "directories": {
