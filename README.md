@@ -18,6 +18,7 @@ npm i webpack-oss --save-dev
 | format | Number | × | ''  | 可用时间戳来生成oss目录版本号，每次会保留最近的版本文件做零宕机发布，删除其他版本文件 |
 | deleteAll | Boolean | × |  | 是否删除bucket/prefix中所有文件。优先匹配format配置 |
 | local | Boolean | × | false | 默认每次上传webpack构建流中文件，设为true可上传打包后webpack output指向目录里的文件 |
+| output | String | × | '' | 读取本地目录的路径，如果local为true，output为空，默认为读取webpack输出目录  |
 | exclude | ExpReg/Array<ExpReg> | × | null | 可传入正则，或正则组成的数组，来排除上传的文件  |
 
 
