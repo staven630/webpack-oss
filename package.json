@@ -1,6 +1,6 @@
 {
     "name": "webpack-oss",
-    "version": "2.1.2",
+    "version": "2.1.3",
     "description": "An automatic upload plug-in for AliOSS",
     "license": "ISC",
     "repository": "staven630/webpack-oss",
