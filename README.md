@@ -8,25 +8,55 @@ npm i webpack-oss --save-dev
 ```
 
 # 参数
-| 选项名 | 类型 | 是否必填 | 默认值 | 描述 |
-| :---  | :--- | :--- | :--- | :--- |
-| accessKeyId | String | √ |  | 阿里云accessKeyId  |
-| accessKeySecret | String | √ |  | 阿里云accessKeySecret |
-| region | String | √ |  | 阿里云region |
-| bucket | String | √ |  | 阿里云bucket  |
-| prefix | String | × | '' | 自定义路径前缀，通常使用项目目录名，文件将存放在alioss的bucket/prefix目录下  |
-| format | Number | × | ''  | 可用时间戳来生成oss目录版本号，每次会保留最近的版本文件做零宕机发布，删除其他版本文件 |
-| deleteAll | Boolean | × |  | 是否删除bucket/prefix中所有文件。优先匹配format配置 |
-| local | Boolean | × | false | 默认每次上传webpack构建流中文件，设为true可上传打包后webpack output指向目录里的文件 |
-| output | String | × | '' | 读取本地目录的路径，如果local为true，output为空，默认为读取webpack输出目录  |
-| exclude | ExpReg/Array<ExpReg> | × | null | 可传入正则，或正则组成的数组，来排除上传的文件  |
-
+| 选项名          | 类型                 | 是否必填 | 默认值 | 描述                                                                                                                                                                                                                          |
+| :-------------- | :------------------- | :------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| accessKeyId     | String               | √        |        | 阿里云accessKeyId                                                                                                                                                                                                             |
+| accessKeySecret | String               | √        |        | 阿里云accessKeySecret                                                                                                                                                                                                         |
+| region          | String               | √        |        | 阿里云region                                                                                                                                                                                                                  |
+| bucket          | String               | √        |        | 阿里云bucket                                                                                                                                                                                                                  |
+| prefix          | String               | ×        | ''     | 自定义路径前缀，通常使用项目目录名，文件将存放在alioss的bucket/prefix目录下                                                                                                                                                   |
+| format          | Number/String        | ×        | ''     | 可用时间戳来生成oss目录版本号，每次会保留最近的版本文件做零宕机发布，删除其他版本文件。格式可以是纯数字，或者时间格式字符串组合(YYYY、YY、MM、DD、HH、hh、mm、SS、ss组成的)， eg: 'YYYYMMDDHH',会取当前时间格式化成2019011214 |
+| limit           | Number               | ×        | 5      | 最多备份版本数量，会备份最近的版本，最小是3。配置了format才会生效                                                                                                                                                             |
+| deleteAll       | Boolean              | ×        |        | 是否删除bucket/prefix中所有文件。优先匹配format配置                                                                                                                                                                           |
+| local           | Boolean              | ×        | false  | 默认每次上传webpack构建流中文件，设为true可上传打包后webpack output指向目录里的文件                                                                                                                                           |
+| output          | String               | ×        | ''     | 读取本地目录的路径，如果local为true，output为空，默认为读取webpack输出目录                                                                                                                                                    |
+| exclude         | ExpReg/Array<ExpReg> | ×        | null   | 可传入正则，或正则组成的数组，来排除上传的文件                                                                                                                                                                                |
 
 # 实例
 
-```
+* 使用webpack构建流文件上传，并删原有所有资源
+```javascript
 const WebpackAliOSSPlugin = require('webpack-oss')
 
+new WebpackAliOSSPlugin({
+  accessKeyId: '2****************9',
+  accessKeySecret: 'z**************=',
+  region: 'oss-cn-hangzhou',
+  bucket: 'staven',
+  prefix: 'nuxt-doc',   // "staven/nuxt-doc/icon_696aaa22.ttf"
+  exclude: [/.*\.html$/], // 或者 /.*\.html$/,排除.html文件的上传  
+  deleteAll: true	  // 优先匹配format配置项
+})
+```
+* 使用打包后的本地文件上传
+```javascript
+const WebpackAliOSSPlugin = require('webpack-oss')
+const path = require('path')
+
+new WebpackAliOSSPlugin({
+  accessKeyId: '2****************9',
+  accessKeySecret: 'z**************=',
+  region: 'oss-cn-hangzhou',
+  bucket: 'staven',
+  prefix: 'nuxt-doc',   // "staven/nuxt-doc/icon_696aaa22.ttf"
+  exclude: [/.*\.html$/], // 或者 /.*\.html$/,排除.html文件的上传  
+  local: true,
+  output: path.resolve(__dirname, './build') // 此项不填，将默认指向webpack/vue-cli等工具输出目录
+})
+```
+* 使用format做版本备份
+```javascript
+const WebpackAliOSSPlugin = require('webpack-oss')
 
 new WebpackAliOSSPlugin({
   accessKeyId: '2****************9',
@@ -36,7 +66,9 @@ new WebpackAliOSSPlugin({
   prefix: 'nuxt-doc',   // "staven/nuxt-doc/icon_696aaa22.ttf"
   exclude: [/.*\.html$/], // 或者 /.*\.html$/,排除.html文件的上传  
   deleteAll: false,	  // 优先匹配format配置项
-  format: Date.now()， // 备份最近版本的oss文件，删除其他版本文件
-  local: true   // 上传打包输出目录里的文件
+  format: 'YYYYMMDDhhmm'， // 备份最近版本的oss文件，删除其他版本文件
+  local: true,   // 上传打包输出目录里的文件
+  limit: 10  // 备份版本数量，其余版本被删除
 })
 ```
+
